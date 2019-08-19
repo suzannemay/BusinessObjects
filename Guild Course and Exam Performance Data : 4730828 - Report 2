@@ -1,0 +1,24 @@
+SELECT
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice as EnrollmentDate,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_YearInvoice as EnrollmentYear,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_MonthInvoice as EnrollmentMonth,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_School) as EnrollSchool,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolDescription) as EnrollSchoolDescription,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolGroup) as EnrollSchoolGroup,
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName) as ParentName,
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ClientName) as ClientName,
+  rtrim(B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_ModuleDescription) as ModuleDescription,
+  rtrim(CAST(B2BBODataWarehouse.dbo.T017_ModuleDetails.c017_LineNumber as CHAR(6))) as ModuleLineNumber,
+  B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_ModuleGPA as ModuleGPA,
+  B2BBODataWarehouse.dbo.T017_ModuleDetails.c017_DateActualShip as ModuleShippedDate,
+  B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_DateModuleStart as ModuleStartDate,
+  B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_DateModuleCompletion as ModuleCompletionDate
+FROM
+  B2BBODataWarehouse.dbo.T017_ModuleDetails RIGHT OUTER JOIN B2BBODataWarehouse.dbo.T001_StudentDetail ON (B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber=B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_StudentNumber and
+B2BBODataWarehouse.dbo.T001_StudentDetail.C001_ItemNumber = B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_ProgramItemNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T003_StudentSummary ON (B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T004_StudentHierarchy ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
+  
+WHERE
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName)  IN  ( 'GUILD EDUCATION INC','GUILD EDUCATION GROUP'  )
