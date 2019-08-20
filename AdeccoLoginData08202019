@@ -1,0 +1,18 @@
+SELECT
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber,
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber,
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName),
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin,
+  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfTimesLoggedOn),
+  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfMinutesLoggedOn),
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes
+FROM
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin RIGHT OUTER JOIN B2BBODataWarehouse.dbo.T004_StudentHierarchy ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber)
+WHERE
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName)  IN  ( 'THE ADECCO GROUP US FOUNDATION'  )
+GROUP BY
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber, 
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber, 
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName), 
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin, 
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes
