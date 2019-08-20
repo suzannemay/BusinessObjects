@@ -1,13 +1,13 @@
 SELECT
-  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber,
-  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber,
-  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName),
-  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin,
-  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfTimesLoggedOn),
-  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfMinutesLoggedOn),
-  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber as ParentNumber,
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName) as ParentName,
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin as LoginDate,
+  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfTimesLoggedOn) as NumberofTimesLoggedOn,
+  sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfMinutesLoggedOn) as NumberofMinutesLoggedOn,
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes as AverageLogonMinutes
 FROM
-  B2BBODataWarehouse.dbo.V081_PFXStudentLogin RIGHT OUTER JOIN B2BBODataWarehouse.dbo.T004_StudentHierarchy ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber)
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy LEFT JOIN B2BBODataWarehouse.dbo.V081_PFXStudentLogin ON (B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber=B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber)
 WHERE
   rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName)  IN  ( 'THE ADECCO GROUP US FOUNDATION'  )
 GROUP BY
