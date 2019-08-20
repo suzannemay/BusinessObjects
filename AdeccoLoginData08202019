@@ -1,3 +1,4 @@
+    
 SELECT
   B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber as ParentNumber,
   B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
@@ -9,7 +10,22 @@ SELECT
   B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess as LastPlatformAccessDate,
   sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfTimesLoggedOn) as NumberofTimesLoggedOn,
   sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfMinutesLoggedOn) as NumberofMinutesLoggedOn,
-  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes as AverageLogonMinutes
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes as AverageLogonMinutes,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateCancel,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateFirstExam,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterFirstAccess,
+  convert(date,B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateLearningStart),
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateCompletion,
+  rtrim(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_Semester),
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_NumberOfSemesters,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateLastExam,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_CourseGradePointAverage,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_LessonAverage,
+  SUM(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_ExamsCompleted),
+  SUM(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_ExamsExcused),
+  SUM(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_ExamsSubmitted),
+  SUM(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_TotalExams)
 FROM
   B2BBODataWarehouse.dbo.T004_StudentHierarchy LEFT JOIN B2BBODataWarehouse.dbo.V081_PFXStudentLogin ON (B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber=B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber)
    INNER JOIN B2BBODataWarehouse.dbo.T003_StudentSummary ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
@@ -25,4 +41,15 @@ GROUP BY
   rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName), 
   B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin, 
   B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess, 
-  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateCancel,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateFirstExam,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterFirstAccess,
+  convert(date,B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateLearningStart),
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateCompletion,
+  rtrim(B2BBODataWarehouse.dbo.T001_StudentDetail.C001_Semester),
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_NumberOfSemesters,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateLastExam,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_CourseGradePointAverage,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_LessonAverage
