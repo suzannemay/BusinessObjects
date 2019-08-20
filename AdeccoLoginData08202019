@@ -1,18 +1,28 @@
 SELECT
-  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
   B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber as ParentNumber,
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_School) as EnrollSchool,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolDescription) as EnrollSchoolDescription,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice as EnrollmentDate,
   rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName) as ParentName,
   B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin as LoginDate,
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess as LastPlatformAccessDate,
   sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfTimesLoggedOn) as NumberofTimesLoggedOn,
   sum(B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_NumberOfMinutesLoggedOn) as NumberofMinutesLoggedOn,
   B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes as AverageLogonMinutes
 FROM
   B2BBODataWarehouse.dbo.T004_StudentHierarchy LEFT JOIN B2BBODataWarehouse.dbo.V081_PFXStudentLogin ON (B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber=B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T003_StudentSummary ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T001_StudentDetail ON (B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
 WHERE
   rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName)  IN  ( 'THE ADECCO GROUP US FOUNDATION'  )
 GROUP BY
-  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber, 
   B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber, 
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber, 
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_School), 
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolDescription), 
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice, 
   rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName), 
   B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin, 
+  B2BBODataWarehouse.dbo.T003_StudentSummary.C003_DateFosterLastAccess, 
   B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_AverageLogonMinutes
