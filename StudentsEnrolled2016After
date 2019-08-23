@@ -1,0 +1,39 @@
+SELECT
+  BODataWarehouse.dbo.T012_StudentSummary.C012_StudentNumber as StudentNumber,
+  BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchool as EnrollSchool,
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolDescription) as EnrollSchoolDescription,
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolCategory) as EnrollSchoolCategory,
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolGroup) as EnrollSchoolGroup,
+  min(CAST(rtrim(BODataWarehouse.dbo.T010_StudentDetail.C010_Semester) as int)) as Semester,
+  BODataWarehouse.dbo.T010_StudentDetail.C010_DateInvoice as EnrollmentDate,
+  BODataWarehouse.dbo.T010_StudentDetail.C010_YearInvoice as EnrollmentYear,
+  BODataWarehouse.dbo.T010_StudentDetail.C010_MonthInvoice as EnrollmentMonth,
+  BODataWarehouse.dbo.T010_StudentDetail.C010_DateLastExam as LastExamDate,
+  BODataWarehouse.dbo.T012_StudentSummary.C012_DateFosterLastAccess as LMSPlatformLastAccessDate
+FROM
+  BODataWarehouse.dbo.T012_StudentSummary LEFT JOIN BODataWarehouse.dbo.T010_StudentDetail ON (BODataWarehouse.dbo.T010_StudentDetail.C010_StudentNumber=BODataWarehouse.dbo.T012_StudentSummary.C012_StudentNumber)
+WHERE
+  rtrim(BODataWarehouse.dbo.T010_StudentDetail.C010_Semester) IN (0, 1)
+  AND BODataWarehouse.dbo.T010_StudentDetail.C010_Semester <> 'V'
+  AND BODataWarehouse.dbo.T010_StudentDetail.C010_YearInvoice >= 2016
+ GROUP BY
+  BODataWarehouse.dbo.T012_StudentSummary.C012_StudentNumber, 
+  BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchool,
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolDescription),
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolCategory), 
+  rtrim(BODataWarehouse.dbo.T012_StudentSummary.C012_EnrollSchoolGroup), 
+  rtrim(BODataWarehouse.dbo.T010_StudentDetail.C010_Semester), 
+  BODataWarehouse.dbo.T010_StudentDetail.C010_DateInvoice, 
+  BODataWarehouse.dbo.T010_StudentDetail.C010_YearInvoice, 
+  BODataWarehouse.dbo.T010_StudentDetail.C010_MonthInvoice, 
+  BODataWarehouse.dbo.T010_StudentDetail.C010_DateLastExam, 
+  BODataWarehouse.dbo.T012_StudentSummary.C012_DateFosterLastAccess
+
+ SELECT
+ COUNT(DISTINCT(BODataWarehouse.dbo.T012_StudentSummary.C012_StudentNumber)) as StudentNumber
+FROM
+  BODataWarehouse.dbo.T012_StudentSummary LEFT JOIN BODataWarehouse.dbo.T010_StudentDetail ON (BODataWarehouse.dbo.T010_StudentDetail.C010_StudentNumber=BODataWarehouse.dbo.T012_StudentSummary.C012_StudentNumber)
+WHERE
+  rtrim(BODataWarehouse.dbo.T010_StudentDetail.C010_Semester) IN (0, 1)
+  AND BODataWarehouse.dbo.T010_StudentDetail.C010_Semester <> 'V'
+  AND BODataWarehouse.dbo.T010_StudentDetail.C010_YearInvoice >= 2016
