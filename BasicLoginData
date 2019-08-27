@@ -1,0 +1,16 @@
+SELECT
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber as StudentNumber,
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber as ParentNumber,
+  convert(varchar, B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice, 101) as EnrollmentDate,
+  convert(varchar, B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin, 101) as LoginDate
+FROM
+  B2BBODataWarehouse.dbo.T001_StudentDetail LEFT JOIN B2BBODataWarehouse.dbo.T004_StudentHierarchy ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber)
+  LEFT JOIN B2BBODataWarehouse.dbo.V081_PFXStudentLogin ON (B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_StudentNumber=B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber)
+WHERE
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName)  IN  ( 'THE ADECCO GROUP US FOUNDATION'  )
+  and B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin IS NOT NULL
+GROUP BY
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber, 
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice,
+  B2BBODataWarehouse.dbo.V081_PFXStudentLogin.F081_DateLogin
