@@ -1,0 +1,33 @@
+SELECT
+  B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber,
+  CONVERT(varchar, B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice, 101) as [Enrollment Date],
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_YearInvoice,
+  B2BBODataWarehouse.dbo.T001_StudentDetail.C001_MonthInvoice,
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_School),
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolDescription),
+  rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_SchoolGroup),
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentName),
+  rtrim(B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ClientName),
+  rtrim(B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ExamNumber) as ExamNumber,
+  rtrim(B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ExamDescription),
+  rtrim(B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ExamType),
+  B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ExamReceivedDate,
+  CONVERT(varchar, B2BBODataWarehouse.dbo.T018_ExamDetails.C018_DateGrade, 101) as [ExamGradeDate],
+  B2BBODataWarehouse.dbo.T018_ExamDetails.C018_DateRetake,
+  B2BBODataWarehouse.dbo.T018_ExamDetails.C018_PGradeIndicator,
+  B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ExamGrade
+FROM
+  B2BBODataWarehouse.dbo.T018_ExamDetails RIGHT OUTER JOIN B2BBODataWarehouse.dbo.T017_ModuleDetails ON (B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_StudentNumber=B2BBODataWarehouse.dbo.T018_ExamDetails.C018_StudentNumber
+and B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_ProgramItemNumber = B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ProgramItemNumber
+and B2BBODataWarehouse.dbo.T017_ModuleDetails.c017_ModuleItemNumber = B2BBODataWarehouse.dbo.T018_ExamDetails.C018_ModuleItemNumber)
+   RIGHT OUTER JOIN B2BBODataWarehouse.dbo.T001_StudentDetail ON (B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber=B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_StudentNumber and
+B2BBODataWarehouse.dbo.T001_StudentDetail.C001_ItemNumber = B2BBODataWarehouse.dbo.T017_ModuleDetails.C017_ProgramItemNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T003_StudentSummary ON (B2BBODataWarehouse.dbo.T001_StudentDetail.C001_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
+   INNER JOIN B2BBODataWarehouse.dbo.T004_StudentHierarchy ON (B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_StudentNumber=B2BBODataWarehouse.dbo.T003_StudentSummary.C003_StudentNumber)
+  
+WHERE
+  rtrim( B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_Prefix)  NOT IN  ( 'DEM','NA'  )
+  AND rtrim(B2BBODataWarehouse.dbo.T003_StudentSummary.C003_TypeOfEnrollment)  <>  'D'
+  AND B2BBODataWarehouse.dbo.T004_StudentHierarchy.C004_ParentNumber  IN  ( 144381  )
+  AND B2BBODataWarehouse.dbo.T018_ExamDetails.C018_DateGrade IS NOT NULL
+  AND B2BBODataWarehouse.dbo.T001_StudentDetail.C001_DateInvoice > '2019-01-31'
